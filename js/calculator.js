@@ -7,23 +7,28 @@ const keypad = document.querySelector('.numberpad');
 
 
 const calculate = (n1, operator, n2) => {
+
+    function roundIfNecesssary(value) {
+        return +parseFloat(value).toFixed(6)
+    }
+
     if (operator === "add") {
-        return parseFloat(n1) + parseFloat(n2);
+        return roundIfNecesssary(parseFloat(n1)+parseFloat(n2));
     } 
     
     if (operator === "subtract") {
-        return parseFloat(n1) - parseFloat(n2);
+        return roundIfNecesssary(n1-n2);
     } 
 
     if (operator === 'multiply') {
-        return parseFloat(n1) * parseFloat(n2);
+        return roundIfNecesssary(n1*n2);
     }
 
     if (operator === 'divide') {
-        return parseFloat(n1) / parseFloat(n2);
+        return roundIfNecesssary(n1/n2);
     };
 
-    return result;
+    //return result;
 };
 
 
@@ -53,7 +58,7 @@ keypad.addEventListener("click", e => {
 
 
         if (!action) {
-            if (displayedNum === '0' || previousKeyType === "operator") {
+            if (displayedNum === '0' || previousKeyType === "operator" || previousKeyType === "calculate") {
                 calcOutput.textContent = keycontent;
             } else {
                 calcOutput.textContent = displayedNum + keycontent;
@@ -63,11 +68,12 @@ keypad.addEventListener("click", e => {
         
         if (action === "decimal" && (!calcOutput.textContent.includes('.'))) {
             calcOutput.textContent += '.'; 
-            calculator.dataset.previousKey.Type = 'decimal';
+            calculator.dataset.previousKeyType = 'decimal';
         };
 
         if (action === "clear") {
             console.log('clear!')
+            calcOutput.textContent = '';
             calculator.dataset.previousKeyType = 'clear';
         };
 
